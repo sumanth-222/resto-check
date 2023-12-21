@@ -39,6 +39,13 @@ class App extends Component {
     }))
   }
 
+  removeCartItem = id => {
+    const {cartList} = this.state
+    const filter = cartList.filter(each => each.dishId === id)
+    this.setState({cartList: filter})
+  }
+
+  
   decrementCartItemQuantity = () => {
     const {count} = this.state
     if (count > 0) {
@@ -68,6 +75,7 @@ class App extends Component {
             incrementCartItemQuantity: this.incrementCartItemQuantity,
             decrementCartItemQuantity: this.decrementCartItemQuantity,
             removeAllCartItems: this.removeAllCartItems,
+            removeCartItem: this.removeCartItem,
           }}
         >
           <Switch>
