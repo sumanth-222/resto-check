@@ -77,9 +77,16 @@ class Item extends Component {
                       </button>
                     </div>
                   ) : null}
-                  {item.dishAvailability && item.count > 0 ? (
-                    <button type="button"  onClick={() => onAddCart(item.dishId, item.count)}>ADD TO CART</button>
-                  ) : (
+                 {item.count > 0 ? (
+                    <button
+                      type="button"
+                      onClick={() => onAddCart(item.dishId, item.count)}
+                    >
+                      ADD TO CART
+                    </button>
+                  ) : null}
+                  {item.dishAvailability ? (
+                    null : (
                     <p className="not-available">Not Available</p>
                   )}
                   {item.addOnCat.length > 0 ? (
