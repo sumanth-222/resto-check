@@ -35,6 +35,13 @@ class Item extends Component {
           updating(id)
         }
 
+       const onAddCart = (id, itemCount) => {
+          if (itemCount > 0) {
+            const filterCart = categoryList.filter(each => each.dishId === id)
+            addCartItem(...filterCart, quantity, uuidv4)
+          }
+        }
+
         const decrease = (dishId, dishCount) => {
           this.setState(prevState => ({quantity: prevState.quantity - 1}))
           deleteCartItem(dishId, dishCount)
@@ -70,8 +77,8 @@ class Item extends Component {
                       </button>
                     </div>
                   ) : null}
-                  {item.dishAvailability ? (
-                    <button type="button">ADD TO CART</button>
+                  {item.dishAvailability && item.count > 0 ? (
+                    <button type="button"  onClick={() => onAddCart(item.dishId, item.count)}>ADD TO CART</button>
                   ) : (
                     <p className="not-available">Not Available</p>
                   )}
