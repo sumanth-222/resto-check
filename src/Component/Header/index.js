@@ -33,7 +33,7 @@ const Header = props => {
   return (
     <div className="header-container">
       <Link to="/">
-        <h1 className="website-name">{restaurantName}</h1>{' '}
+        <h1 className="website-name">UNI Resto Cafe</h1>{' '}
       </Link>
       <div className="orders">
         <p className="order">My Orders</p>
