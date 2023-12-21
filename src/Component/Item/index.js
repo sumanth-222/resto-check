@@ -67,7 +67,7 @@ class Item extends Component {
                       >
                         -
                       </button>
-                      <p className="count">{quantity}</p>
+                      <p className="count">{item.count}</p>
                       <button
                         className="btn"
                         type="button"
