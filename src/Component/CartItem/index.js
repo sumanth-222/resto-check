@@ -1,3 +1,4 @@
+import {AiFillCloseCircle} from 'react-icons/ai'
 import CartContext from '../../context/CartContext'
 
 import './index.css'
@@ -6,15 +7,28 @@ const CartItem = props => (
   <CartContext.Consumer>
     {value => {
       const {
-        deleteCartItem,
         incrementCartItemQuantity,
         decrementCartItemQuantity,
-        count,
+        removeCartItem,
       } = value
       const {cartItemDetails} = props
-      const {id, dishName, brand, dishPrice, dishImage} = cartItemDetails
-      const onDeleteCartItem = () => {
-        deleteCartItem(id)
+      const {
+        dishId,
+        dishName,
+        brand,
+        count,
+        dishPrice,
+        dishImage,
+      } = cartItemDetails
+
+      const onClickDecrement = () => {
+        decrementCartItemQuantity(dishId, count)
+      }
+      const onClickIncrement = () => {
+        incrementCartItemQuantity(dishId)
+      }
+      const onRemoveCartItem = () => {
+        removeCartItem(dishId)
       }
 
       return (
@@ -30,7 +44,7 @@ const CartItem = props => (
               <button
                 type="button"
                 className="quantity-button"
-                onClick={decrementCartItemQuantity}
+                onClick={onClickDecrement}
               >
                 -
               </button>
@@ -38,28 +52,21 @@ const CartItem = props => (
               <button
                 type="button"
                 className="quantity-button"
-                onClick={incrementCartItemQuantity}
+                onClick={onClickIncrement}
               >
                 +
               </button>
             </div>
             <div className="total-price-delete-container">
               <p className="cart-total-price">Rs {dishPrice * count}/-</p>
-              <button
-                className="remove-button"
-                type="button"
-                onClick={onDeleteCartItem}
-              >
-                Remove
-              </button>
             </div>
           </div>
           <button
             className="delete-button"
             type="button"
-            onClick={onDeleteCartItem}
+            onClick={onRemoveCartItem}
           >
-            x
+            <AiFillCloseCircle color="#616E7C" size={20} />
           </button>
         </li>
       )
