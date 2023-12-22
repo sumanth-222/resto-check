@@ -1,7 +1,7 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
-/* import {Redirect} from 'react-router-dom' */
+import {Redirect} from 'react-router-dom'
 
 /* import Slider from 'react-slick'
 
@@ -118,7 +118,7 @@ class Home extends Component {
   }
 
   deletingWithId = (id, dishCount) => {
-    if (dishCount >= 1) {
+    if (dishCount > 0) {
       this.setState(prevState => {
         const updatedDishes = prevState.categoryItem.map(dish => {
           if (dish.dishId === id) {
@@ -185,7 +185,6 @@ class Home extends Component {
                     updating={this.updatingWithId}
                     deleting={this.deletingWithId}
                   />
-                  ))
                 </ul>
               </div>
             )}
