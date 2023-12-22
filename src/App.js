@@ -8,10 +8,31 @@ import './App.css'
 import NotFound from './Component/NotFound'
 
 class App extends Component {
-  state = {cartList: [], cartId: '', count: 0}
+  state = {cartList: []}
 
   addCartItem = item => {
-    this.setState(prevState => ({cartList: [...prevState.cartList, item]}))
+    const {cartList} = this.state
+    const productObject = cartList.find(
+      eachCartItem => eachCartItem.dishId === item.dishId,
+    )
+
+    if (productObject) {
+      this.setState(prevState => ({
+        cartList: prevState.cartList.map(eachCartItem => {
+          if (productObject.dishId === eachCartItem.dishId) {
+            const updatedQuantity = eachCartItem.count + item.count
+
+            return {...eachCartItem, count: updatedQuantity}
+          }
+
+          return eachCartItem
+        }),
+      }))
+    } else {
+      const updatedCartList = [...cartList, item]
+
+      this.setState({cartList: updatedCartList})
+    }
   }
 
   deleteCartItem = (id, dishCount) => {
@@ -21,22 +42,24 @@ class App extends Component {
     const filteredData = cartList.filter(
       each => each.count !== dishCount - 1 && each.dishId !== id,
     )
-    const a = cartList.map(
-      each => each.count !== dishCount && each.dishId !== id,
-    )
-    console.log(a)
     this.setState({cartList: filteredData})
-    console.log(filteredData)
   }
 
   getCartId = dishId => {
     this.setState({cartId: dishId})
   }
 
-  incrementCartItemQuantity = () => {
-    this.setState(prevState => ({
-      count: prevState.count + 1,
-    }))
+  incrementCartItemQuantity = id => {
+    this.setState(prevState => {
+      const updatedDishes = prevState.cartList.map(dish => {
+        if (dish.dishId === id) {
+          return {...dish, count: dish.count + 1}
+        }
+        return dish
+      })
+
+      return {cartList: updatedDishes}
+    })
   }
 
   removeCartItem = id => {
@@ -45,14 +68,17 @@ class App extends Component {
     this.setState({cartList: filter})
   }
 
-  
-  decrementCartItemQuantity = () => {
-    const {count} = this.state
-    if (count > 0) {
-      this.setState(prevState => ({
-        count: prevState.count - 1,
-      }))
-    }
+  decrementCartItemQuantity = id => {
+    this.setState(prevState => {
+      const updatedDishes = prevState.cartList.map(dish => {
+        if (dish.dishId === id) {
+          return {...dish, count: dish.count - 1}
+        }
+        return dish
+      })
+
+      return {cartList: updatedDishes}
+    })
   }
 
   removeAllCartItems = () => {
