@@ -1,5 +1,5 @@
 import {Component} from 'react'
-import {v4 as uuidv4} from 'uuid'
+/* import {v4 as uuidv4} from 'uuid' */
 import CartContext from '../../context/CartContext'
 
 import './index.css'
@@ -25,27 +25,22 @@ class Item extends Component {
   renderItem = () => (
     <CartContext.Consumer>
       {value => {
-        const {addCartItem, deleteCartItem} = value
+        const {addCartItem} = value
+
         const {quantity} = this.state
+        console.log(quantity)
         const {categoryList, updating, deleting} = this.props
-        const onAddItem = id => {
-          this.setState(prevState => ({quantity: prevState.quantity + 1}))
-          const filterCart = categoryList.filter(each => each.dishId === id)
-          addCartItem(...filterCart, quantity, uuidv4)
-          updating(id)
+
+        const onIncrementItem = (id, count) => {
+          updating(id, count)
         }
 
-       const onAddCart = (id, itemCount) => {
-          if (itemCount > 0) {
-            const filterCart = categoryList.filter(each => each.dishId === id)
-            addCartItem(...filterCart, quantity, uuidv4)
-          }
+        const onDecrementItem = (id, count) => {
+          deleting(id, count)
         }
 
-        const decrease = (dishId, dishCount) => {
-          this.setState(prevState => ({quantity: prevState.quantity - 1}))
-          deleteCartItem(dishId, dishCount)
-          deleting(dishId.toString(), Number(dishCount) - 1)
+        const onAddItem = (item, count) => {
+          addCartItem(item, count)
         }
 
         return (
@@ -63,7 +58,7 @@ class Item extends Component {
                       <button
                         className="btn"
                         type="button"
-                        onClick={() => decrease(item.dishId, item.count)}
+                        onClick={() => onDecrementItem(item.dishId, item.count)}
                       >
                         -
                       </button>
@@ -71,22 +66,21 @@ class Item extends Component {
                       <button
                         className="btn"
                         type="button"
-                        onClick={() => onAddItem(item.dishId)}
+                        onClick={() => onIncrementItem(item.dishId, item.count)}
                       >
                         +
                       </button>
                     </div>
                   ) : null}
-                 {item.count > 0 ? (
+                  {item.count > 0 ? (
                     <button
                       type="button"
-                      onClick={() => onAddCart(item.dishId, item.count)}
+                      onClick={() => onAddItem(item, item.count)}
                     >
                       ADD TO CART
                     </button>
                   ) : null}
-                  {item.dishAvailability ? (
-                    null : (
+                  {item.dishAvailability ? null : (
                     <p className="not-available">Not Available</p>
                   )}
                   {item.addOnCat.length > 0 ? (
